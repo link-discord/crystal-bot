@@ -19,11 +19,6 @@ logger.enableDebug = true
 const maxTries = 5
 let tries = 0
 
-if (!Bun.env.MC_HOST || !Bun.env.MC_PORT || !Bun.env.MC_OWNER) {
-    logger.error('Missing environment variables. Exiting...')
-    process.exit(1)
-}
-
 async function run() {
     console.clear()
 
@@ -45,8 +40,6 @@ async function run() {
         shotProjectiles: new Map(), 
         owner: Bun.env.MC_OWNER as string
     }
-
-    console.log(bot.bloodhound)
 
     // for whatever reason mineflayer doesn't fire the entityHurt event properly anymore
     // so this code is gonna be a workaround for that
