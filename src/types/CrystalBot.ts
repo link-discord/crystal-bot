@@ -14,5 +14,6 @@ export interface CrystalBot extends Bot {
     commands: Map<string, Command>
     state: {
         shotProjectiles: Map<number, ProjectileInfo>
+        owner: string
     }
 }

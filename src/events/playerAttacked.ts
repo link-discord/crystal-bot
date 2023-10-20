@@ -6,13 +6,14 @@ const event: Event = {
     name: 'playerAttacked',
     execute: async (bot, victim: Entity, attacker: Entity) => {
         if (attacker.username === bot.entity.username) return
+        else if (victim.username !== bot.state.owner) return
 
         const attackerName = attacker.username ?? attacker.displayName
         const victimName = victim.username ?? victim.displayName
 
         logger.debug(`${victimName} got hit by ${attackerName}!`)
 
-        const player = bot.players[victim.username!]
+        const player = bot.players[attacker.username!]
 
         if (player && player.gamemode === 1) return
 
