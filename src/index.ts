@@ -17,8 +17,8 @@ async function run() {
 
     const bot = createBot({
         username: 'CrystalBot',
-        host: '172.28.112.1',
-        port: 25565,
+        host: Bun.env.MC_HOST,
+        port: Number(Bun.env.MC_PORT),
         auth: 'offline'
     }) as CrystalBot
 
