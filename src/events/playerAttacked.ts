@@ -5,8 +5,11 @@ import { logger } from '../utils/logger'
 const event: Event = {
     name: 'playerAttacked',
     execute: async (bot, victim: Entity, attacker: Entity) => {
-        if (attacker.username === bot.entity.username) return
-        else if (victim.username !== bot.state.owner) return
+        const protectedTargets = [bot.username, bot.state.owner]
+
+        if (attacker.username && protectedTargets.includes(attacker.username)) return
+        else if (victim.type !== 'player') return
+        else if (!protectedTargets.includes(victim.username as string)) return
 
         const attackerName = attacker.username ?? attacker.displayName
         const victimName = victim.username ?? victim.displayName
