@@ -10,7 +10,7 @@ const event: Event = {
 
         // go through bot.entites and sort by closest distance to the entity
         const closestPlayer = Object.values(bot.entities)
-            .filter((e) => e.type === 'player')
+            .filter((e) => e.type === 'player' || e.type === 'hostile')
             .sort((a, b) => {
                 const distanceA = a.position.distanceTo(entity.position)
                 const distanceB = b.position.distanceTo(entity.position)
@@ -19,7 +19,7 @@ const event: Event = {
             })[0]
 
         // If we can't find the closest player, return
-        if (closestPlayer == undefined || !closestPlayer.username) return
+        if (closestPlayer == undefined) return
 
         // Add the projectile to the map
         bot.state.shotProjectiles.set(entity.id, {
