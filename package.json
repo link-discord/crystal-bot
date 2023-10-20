@@ -1,0 +1,20 @@
+{
+  "name": "bun",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "^1.0.6"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@nxg-org/mineflayer-trajectories": "^1.1.1",
+    "chalk": "^5.3.0",
+    "mineflayer": "^4.14.0",
+    "mineflayer-armor-manager": "^2.0.1",
+    "mineflayer-auto-eat": "^3.3.6",
+    "mineflayer-pathfinder": "^2.4.5",
+    "mineflayer-statemachine": "^1.7.0"
+  }
+}
