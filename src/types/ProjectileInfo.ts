@@ -1,7 +1,8 @@
 import type { Vec3 } from 'vec3'
+import type { Entity } from 'prismarine-entity'
 
 export interface ProjectileInfo {
-    username: string
+    attacker: Entity
     lastPosition: Vec3
     lastUpdate: number
 }

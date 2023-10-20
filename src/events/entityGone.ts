@@ -10,15 +10,9 @@ const event: Event = {
 
         if (!projectile) return
 
-        const pn = entity.displayName
-        const archer = projectile.username
+        await Bun.sleep(50)
 
-        await bot.waitForTicks(1)
-
-        if (bot.state.tookDamage) { 
-            bot.emit('playerAttack', entity)
-            bot.chat(`I got hit by ${archer}'s ${pn}`) 
-        }
+        if (bot.state.tookDamage) bot.emit('playerAttack', projectile.attacker)
 
         bot.state.shotProjectiles.delete(entity.id)
     }

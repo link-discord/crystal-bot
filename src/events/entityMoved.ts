@@ -29,7 +29,7 @@ const event: Event = {
         }
 
         bot.state.shotProjectiles.set(entity.id, {
-            username: projectile.username,
+            attacker: projectile.attacker,
             lastUpdate: Date.now(),
             lastPosition: entity.position.clone()
         })
