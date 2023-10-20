@@ -6,7 +6,11 @@ const event: Event = {
         if (entity.type !== 'player' || entity.username !== bot.username) return
 
         bot.once('entityGone', (entity) => {
-            if (entity.type !== 'projectile') return
+            const distance = bot.entity.position.distanceTo(entity.position)
+
+            console.log(distance)
+
+            if (entity.type !== 'projectile' || distance > 3.5) return
 
             const projectile = bot.state.shotProjectiles.get(entity.id)
 
