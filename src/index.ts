@@ -42,7 +42,7 @@ async function run() {
 
     // for whatever reason mineflayer doesn't fire the entityHurt event properly anymore
     // so this code is gonna be a workaround for that
-    bot._client.on('hurt_animation', (packet) => {
+    bot._client.on('damage_event', (packet) => {
         const entity = bot.entities[packet.entityId]
 
         if (!entity) return

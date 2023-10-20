@@ -11,18 +11,8 @@ const event: Event = {
         if (!projectile) return
 
         const timeSinceLastUpdate = Date.now() - projectile.lastUpdate
-        const currentDistance = entity.position.distanceTo(bot.entity.position)
-        const previousDistance = projectile.lastPosition.distanceTo(bot.entity.position)
 
-        // if the distance got bigger we know the projectile is moving away from us
-        // so we can remove it from the map because it doesn't matter anymore
-        if (currentDistance > previousDistance) {
-            setTimeout(() => {
-                bot.state.shotProjectiles.delete(entity.id)
-            }, 100)
-
-            return
-        } else if (timeSinceLastUpdate > 600) {
+        if (timeSinceLastUpdate > 600) {
             // If the projectile hasn't moved in 600ms, we know its not moving anymore
             bot.state.shotProjectiles.delete(entity.id)
             return
@@ -30,8 +20,7 @@ const event: Event = {
 
         bot.state.shotProjectiles.set(entity.id, {
             attacker: projectile.attacker,
-            lastUpdate: Date.now(),
-            lastPosition: entity.position.clone()
+            lastUpdate: Date.now()
         })
     }
 }

@@ -3,11 +3,16 @@ import type { Entity } from 'prismarine-entity'
 import { logger } from '../utils/logger'
 
 const event: Event = {
-    name: 'botAttacked',
-    execute: async (bot, entity: Entity) => {
-        logger.debug(`I got hit by ${entity.username || entity.displayName}`)
+    name: 'playerAttacked',
+    execute: async (bot, victim: Entity, attacker: Entity) => {
+        if (attacker.username === bot.entity.username) return
 
-        const player = bot.players[entity.username!]
+        const attackerName = attacker.username ?? attacker.displayName
+        const victimName = victim.username ?? victim.displayName
+
+        logger.debug(`${victimName} got hit by ${attackerName}!`)
+
+        const player = bot.players[victim.username!]
 
         if (player && player.gamemode === 1) return
 
@@ -18,7 +23,7 @@ const event: Event = {
         else if (axe) await bot.equip(axe, 'hand')
         else return
 
-        void bot.swordpvp.attack(entity)
+        void bot.swordpvp.attack(attacker)
     }
 }
 

@@ -6,7 +6,7 @@ import type { ProjectileInfo } from './ProjectileInfo'
 
 declare module 'mineflayer' {
     interface BotEvents {
-        botAttacked: (attacker: Entity) => Promise<void> | void
+        playerAttacked: (victim: Entity, attacker: Entity) => Promise<void> | void
     }
 }
 

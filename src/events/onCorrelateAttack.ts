@@ -3,9 +3,9 @@ import type { Event } from '../types/Event'
 
 const event: Event = {
     name: 'onCorrelateAttack',
-    execute(bot, attacker: Entity, victim: Entity) {        
-        if (victim.type === 'player' && victim.username === bot.username) {
-            bot.emit('botAttacked', attacker)
+    execute(bot, attacker: Entity, victim: Entity) {
+        if (victim.type === 'player') {
+            bot.emit('playerAttacked', victim, attacker)
         }
     }
 }

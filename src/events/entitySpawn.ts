@@ -24,8 +24,7 @@ const event: Event = {
         // Add the projectile to the map
         bot.state.shotProjectiles.set(entity.id, {
             attacker: closestPlayer,
-            lastUpdate: Date.now(),
-            lastPosition: entity.position
+            lastUpdate: Date.now()
         })
     }
 }
