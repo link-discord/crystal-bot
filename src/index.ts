@@ -4,6 +4,13 @@ import { awaitSpawn } from './utils/awaitSpawn'
 import { loadCommands } from './loaders/commands'
 import { loadEvents } from './loaders/events'
 import { logger } from './utils/logger'
+import { plugin } from 'mineflayer-auto-eat'
+import { pathfinder } from 'mineflayer-pathfinder'
+import bloodHound from './bloodHound'
+import armorManager from 'mineflayer-armor-manager'
+import pvp from '@nxg-org/mineflayer-custom-pvp'
+
+const autoEat = plugin
 
 // Will print any debug messages, otherwise they will be hidden
 logger.enableDebug = true
@@ -20,18 +27,28 @@ async function run() {
         host: Bun.env.MC_HOST,
         port: Number(Bun.env.MC_PORT),
         auth: 'offline'
-    }) as CrystalBot
+    }) as unknown as CrystalBot
 
-    bot.loadPlugin(require('mineflayer-pathfinder').pathfinder)
-    bot.loadPlugin(require('mineflayer-auto-eat').plugin)
-    bot.loadPlugin(require('mineflayer-armor-manager'))
+    bot.loadPlugin(bloodHound)
+    bot.loadPlugin(pvp)
+    bot.loadPlugin(pathfinder)
+    bot.loadPlugin(autoEat)
+    bot.loadPlugin(armorManager)
 
     bot.commands = new Map()
-    bot.state = {
-        shotProjectiles: new Map(),
-        oldHealth: 0,
-        tookDamage: false
-    }
+    bot.state = { shotProjectiles: new Map() }
+
+    console.log(bot.bloodhound)
+
+    // for whatever reason mineflayer doesn't fire the entityHurt event properly anymore
+    // so this code is gonna be a workaround for that
+    bot._client.on('hurt_animation', (packet) => {
+        const entity = bot.entities[packet.entityId]
+
+        if (!entity) return
+
+        bot.emit('entityHurt', entity)
+    })
 
     // We need to add this event before loading commands and events
     // So this event isnt gonna be in the events folder
@@ -52,8 +69,6 @@ async function run() {
     await awaitSpawn(bot)
     await loadCommands(bot)
     await loadEvents(bot)
-
-    bot.state.oldHealth = bot.health
 
     logger.info('Bot is ready!')
 }
