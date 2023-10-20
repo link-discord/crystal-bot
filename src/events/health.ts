@@ -29,6 +29,8 @@ const event: Event = {
             const archer = projectile.username
             const pn = entity.displayName
 
+            bot.emit('playerAttack', entity)
+
             return bot.chat(`I got hit by ${archer}'s ${pn}.`)
         }
     }

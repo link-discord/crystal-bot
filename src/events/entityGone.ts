@@ -15,7 +15,10 @@ const event: Event = {
 
         await bot.waitForTicks(1)
 
-        if (bot.state.tookDamage) bot.chat(`I got hit by ${archer}'s ${pn}`)
+        if (bot.state.tookDamage) { 
+            bot.emit('playerAttack', entity)
+            bot.chat(`I got hit by ${archer}'s ${pn}`) 
+        }
 
         bot.state.shotProjectiles.delete(entity.id)
     }
