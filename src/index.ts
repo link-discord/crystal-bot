@@ -1,4 +1,5 @@
 import type { CrystalBot } from './types/CrystalBot'
+import { Movements } from 'mineflayer-pathfinder'
 import { createBot } from 'mineflayer'
 import { awaitSpawn } from './utils/awaitSpawn'
 import { loadCommands } from './loaders/commands'
@@ -26,7 +27,8 @@ async function run() {
         username: 'CrystalBot',
         host: Bun.env.MC_HOST,
         port: Number(Bun.env.MC_PORT),
-        auth: 'offline'
+        auth: 'offline',
+        version: '1.18.2'
     }) as unknown as CrystalBot
 
     bot.loadPlugin(bloodHound)
@@ -70,6 +72,15 @@ async function run() {
     await awaitSpawn(bot)
     await loadCommands(bot)
     await loadEvents(bot)
+
+    const defaultMovements = new Movements(bot)
+
+    defaultMovements.allow1by1towers = false
+    defaultMovements.allowFreeMotion = true
+    defaultMovements.allowParkour = true
+    defaultMovements.canOpenDoors = true
+
+    bot.pathfinder.setMovements(defaultMovements)
 
     logger.info('Bot is ready!')
 }
