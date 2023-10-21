@@ -9,6 +9,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@miner-org/bloodhound": "^1.0.1",
     "@nxg-org/mineflayer-custom-pvp": "^1.7.2",
     "chalk": "^5.3.0",
     "mineflayer": "^4.14.0",

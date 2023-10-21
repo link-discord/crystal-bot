@@ -1,20 +1,21 @@
 import type { Event } from '../types/Event'
 import type { Entity } from 'prismarine-entity'
 import { logger } from '../utils/logger'
+import { Item } from 'prismarine-item'
 
 const event: Event = {
-    name: 'playerAttacked',
-    execute: async (bot, victim: Entity, attacker: Entity) => {
+    name: 'entityAttack',
+    execute: async (bot, victim: Entity, attacker: Entity, weapon: Item | null) => {
         const protectedTargets = [bot.username, bot.state.owner]
+        const attackerName = attacker.username ?? attacker.displayName
+        const victimName = victim.username ?? victim.displayName
 
         if (attacker.username && protectedTargets.includes(attacker.username)) return
         else if (victim.type !== 'player') return
         else if (!protectedTargets.includes(victim.username as string)) return
 
-        const attackerName = attacker.username ?? attacker.displayName
-        const victimName = victim.username ?? victim.displayName
-
-        logger.debug(`${victimName} got hit by ${attackerName}!`)
+        if (!weapon) logger.debug(`${attackerName} attacked ${victimName}!`)
+        else logger.debug(`${attackerName} attacked ${victimName} with ${weapon.displayName}!`)
 
         const player = bot.players[attacker.username!]
 

@@ -1,5 +1,4 @@
 import type { CrystalBot } from './types/CrystalBot'
-import { Movements } from 'mineflayer-pathfinder'
 import { createBot } from 'mineflayer'
 import { awaitSpawn } from './utils/awaitSpawn'
 import { loadCommands } from './loaders/commands'
@@ -7,7 +6,7 @@ import { loadEvents } from './loaders/events'
 import { logger } from './utils/logger'
 import { plugin } from 'mineflayer-auto-eat'
 import { pathfinder } from 'mineflayer-pathfinder'
-import bloodHound from './bloodHound'
+import { bloodhound } from '@miner-org/bloodhound'
 import armorManager from 'mineflayer-armor-manager'
 import pvp from '@nxg-org/mineflayer-custom-pvp'
 
@@ -24,34 +23,21 @@ async function run() {
     console.clear()
 
     const bot = createBot({
-        username: 'CrystalBot',
+        username: Bun.env.MC_USERNAME as string,
         host: Bun.env.MC_HOST,
         port: Number(Bun.env.MC_PORT),
-        auth: 'offline',
-        version: '1.18.2'
+        auth: Bun.env.MC_AUTH as any,
+        version: Bun.env.MC_VERSION,
     }) as unknown as CrystalBot
 
-    bot.loadPlugin(bloodHound)
+    bot.loadPlugin(bloodhound)
     bot.loadPlugin(pvp)
     bot.loadPlugin(pathfinder)
     bot.loadPlugin(autoEat)
     bot.loadPlugin(armorManager)
 
     bot.commands = new Map()
-    bot.state = { 
-        shotProjectiles: new Map(), 
-        owner: Bun.env.MC_OWNER as string
-    }
-
-    // for whatever reason mineflayer doesn't fire the entityHurt event properly anymore
-    // so this code is gonna be a workaround for that
-    bot._client.on('damage_event', (packet) => {
-        const entity = bot.entities[packet.entityId]
-
-        if (!entity) return
-
-        bot.emit('entityHurt', entity)
-    })
+    bot.state = { owner: Bun.env.MC_OWNER as string }
 
     // We need to add this event before loading commands and events
     // So this event isnt gonna be in the events folder
@@ -72,15 +58,6 @@ async function run() {
     await awaitSpawn(bot)
     await loadCommands(bot)
     await loadEvents(bot)
-
-    const defaultMovements = new Movements(bot)
-
-    defaultMovements.allow1by1towers = false
-    defaultMovements.allowFreeMotion = true
-    defaultMovements.allowParkour = true
-    defaultMovements.canOpenDoors = true
-
-    bot.pathfinder.setMovements(defaultMovements)
 
     logger.info('Bot is ready!')
 }
