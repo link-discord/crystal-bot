@@ -1,7 +1,7 @@
 import type { Event } from '../types/Event'
 import type { Entity } from 'prismarine-entity'
+import type { Item } from 'prismarine-item'
 import { logger } from '../utils/logger'
-import { Item } from 'prismarine-item'
 
 const event: Event = {
     name: 'entityAttack',
